@@ -181,3 +181,91 @@ Homepage in package.json: Don’t forget to specify the homepage field in your p
 CopyReplit
 "homepage": "https://<your-github-username>.github.io/<your-repo-name>"
 This configuration will allow you to build and deploy your React app to GitHub Pages without involving additional complexities from Docker, Nginx, or other dependencies. If you need further modifications or additional assistance, feel free to ask!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.github/workflows/deploy.yml
+Here is the updated deploy.yml file that includes steps to build the Docker image and push it to a container registry, along with deploying the built application to GitHub Pages:
+
+CopyReplit
+name: CI/CD Pipeline for React App
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch if it's not main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-react-app .
+
+      - name: Login to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker tag my-react-app ${DOCKER_USERNAME}/my-react-app:latest
+          docker push ${DOCKER_USERNAME}/my-react-app:latest
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # Specify Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages  # Change this if you want a different branch for deployment
