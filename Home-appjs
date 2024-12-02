@@ -1,0 +1,19 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './Home';
+import PageA from './PageA';
+import PageB from './PageB';
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/pageA" component={PageA} />
+        <Route path="/pageB" component={PageB} />
+        <Route path="/" component={Home} />
+      </Switch>
+    </Router>
+  );
+};
+
+export default App;
