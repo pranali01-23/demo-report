@@ -1,0 +1,25 @@
+.landing-page {
+  text-align: center;
+  margin: 20px;
+}
+
+.button-container {
+  display: flex; /* Use flexbox for horizontal layout */
+  justify-content: center; /* Center the buttons */
+  gap: 20px; /* Add some space between boxes */
+}
+
+.interactive-box {
+  background-color: #007bff; /* Blue color for the boxes */
+  color: white; /* Text color */
+  padding: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 150px; /* Set a fixed width for boxes */
+  text-align: center; /* Center text */
+}
+
+.interactive-box:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
