@@ -35,13 +35,20 @@ const ReportPage = () => {
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
         setCurrentReport(ALL_REPORTS[newValue]);
+        // Reset the page and data when switching reports
+        setCurrentPage(1);
     };
 
     const handleSubmit = async () => {
         setLoading(true);
-        const data = await fetchReportData(currentReport, dateTime);
-        setTotalPages(Math.ceil(data.length / pageSize));
-        setReportData(data);
+        try {
+            const data = await fetchReportData(currentReport, dateTime);
+            setTotalPages(Math.ceil(data.length / pageSize));
+            setReportData(data);
+        } catch (error) {
+            console.error('Failed to fetch report data:', error);
+            // Optionally handle the error state here
+        }
         setLoading(false);
     };
 
