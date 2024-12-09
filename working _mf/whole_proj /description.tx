@@ -1,0 +1,12 @@
+create react project using material ui having report page 
+1.it should have 5 different report tabs vertically aligned 
+2.tabular report details of respective report should display next to it by fetching data through api 
+3.each report should have date time picker with date and 30 mins interval time selection also submit button horizontally aligned on top of report table display
+4.report data should display default details using api and it should also display respective details once we select datetime picker and submit it to api with report name value in api 
+
+5.once we click one report it should display loader till details are fetched from api 
+6.each report should have pagination
+7Also include export button and export display data in csv format, align this button besides submit button of datetimepicker 
+
+Please create components for loader, pagination, export csv 
+Make great user experience
