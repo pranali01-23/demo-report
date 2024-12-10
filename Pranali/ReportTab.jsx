@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { CircularProgress, Button, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
+import {
+  CircularProgress,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+} from '@mui/material';
 
 const ReportTab = ({ reportId, dateTime }) => {
   const [data, setData] = useState([]);
@@ -26,25 +37,37 @@ const ReportTab = ({ reportId, dateTime }) => {
   }, [reportId, dateTime, page]);
 
   const handleNextPage = () => {
-    if (page < totalPages) setPage(prev => prev + 1);
+    if (page < totalPages) setPage((prev) => prev + 1);
   };
 
   const handlePrevPage = () => {
-    if (page > 1) setPage(prev => prev - 1);
+    if (page > 1) setPage((prev) => prev - 1);
   };
 
   if (loading) return <CircularProgress className="loading" />;
 
   return (
     <Paper elevation={1} className="report-container">
-      <Typography variant="h6">Report {reportId + 1}</Typography>
-      <List>
-        {data.map((item, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={item.name} />
-          </ListItem>
-        ))}
-      </List>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Detail</TableCell>
+              <TableCell align="left">Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell align="left">{item.name}</TableCell>
+                <TableCell align="left">{item.detail}</TableCell>
+                <TableCell align="left">{item.status}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <div className="pagination">
         <Button onClick={handlePrevPage} disabled={page === 1} color="primary">
           Previous
