@@ -1,0 +1,27 @@
+.app-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1976d2; /* Material UI primary color */
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.date-time-picker {
+  margin-bottom: 20px;
+}
+
+.tab-label {
+  font-weight: bold;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
