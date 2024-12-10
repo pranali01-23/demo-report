@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { CircularProgress, Button } from '@mui/material';
+import { CircularProgress, Button, List, ListItem, ListItemText } from '@mui/material';
 
 const ReportTab = ({ reportId, dateTime }) => {
   const [data, setData] = useState([]);
@@ -33,20 +33,26 @@ const ReportTab = ({ reportId, dateTime }) => {
     if (page > 1) setPage(prev => prev - 1);
   };
 
-  if (loading) return <CircularProgress />;
+  if (loading) return <CircularProgress className="loading" />;
 
   return (
     <div>
       <h2>Report {reportId + 1}</h2>
-      <ul>
+      <List>
         {data.map((item, index) => (
-          <li key={index}>{item.name}</li>
+          <ListItem key={index}>
+            <ListItemText primary={item.name} />
+          </ListItem>
         ))}
-      </ul>
+      </List>
       <div>
-        <Button onClick={handlePrevPage} disabled={page === 1}>Previous</Button>
+        <Button onClick={handlePrevPage} disabled={page === 1} color="primary">
+          Previous
+        </Button>
         <span>{` Page ${page} of ${totalPages} `}</span>
-        <Button onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
+        <Button onClick={handleNextPage} disabled={page === totalPages} color="primary">
+          Next
+        </Button>
       </div>
     </div>
   );
