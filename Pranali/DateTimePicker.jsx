@@ -1,7 +1,7 @@
 import React from 'react';
 import 'react-datetime/css/react-datetime.css'; // Import default styling
 import Datetime from 'react-datetime';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 
 const DateTimePicker = ({ onSubmit }) => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -17,17 +17,19 @@ const DateTimePicker = ({ onSubmit }) => {
   };
 
   return (
-    <div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       <Datetime
         value={selectedDate}
         onChange={handleDateChange}
-        renderInput={(props) => <TextField {...props} fullWidth />}
+        renderInput={(props) => (
+          <TextField {...props} fullWidth label="Select Date & Time" />
+        )}
       />
       <Button
         variant="contained"
         color="primary"
         onClick={handleSubmit}
-        style={{ marginTop: '16px' }}
+        style={{ marginLeft: '16px' }}
       >
         Submit
       </Button>
