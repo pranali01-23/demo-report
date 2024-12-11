@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tab, Tabs, Typography, AppBar, Box, Button, Grid, Paper } from '@mui/material';
+import { Tab, Tabs, Typography, AppBar, Box, Button, Grid, Paper, CircularProgress } from '@mui/material';
 import DateTimePicker from './DateTimePicker';
 import ReportTab from './ReportTab';
 
@@ -15,6 +15,7 @@ const ReportTabs = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [dateTime, setDateTime] = useState(new Date());
   const [reportData, setReportData] = useState([]);
+  const [loading, setLoading] = useState(false); // Loading state
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -30,6 +31,7 @@ const ReportTabs = () => {
     const reportApi = REPORTS[reportId].api;
     const formattedDate = date.toISOString(); // Format DateTime for API
 
+    setLoading(true); // Start loading
     try {
       const response = await fetch(`${reportApi}?datetime=${formattedDate}`);
       const data = await response.json();
@@ -38,6 +40,7 @@ const ReportTabs = () => {
       console.error('Error fetching report data:', error);
       setReportData([]); // Reset data on error
     }
+    setLoading(false); // End loading
   };
 
   useEffect(() => {
@@ -87,10 +90,16 @@ const ReportTabs = () => {
               </Grid>
 
               <Grid item xs={12}>
-                <ReportTab
-                  columns={REPORTS[selectedTab].columns}
-                  data={reportData}
-                />
+                {loading ? (
+                   <Box display="flex" justifyContent="center" alignItems="center" style={{ height: '200px' }}>
+                     <CircularProgress />
+                   </Box>
+                ) : (
+                  <ReportTab
+                    columns={REPORTS[selectedTab].columns}
+                    data={reportData}
+                  />
+                )}
               </Grid>
             </Grid>
           </Box>
