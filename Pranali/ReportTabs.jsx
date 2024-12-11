@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Tab, Tabs, Typography, AppBar, Box, Button, Grid, Paper, CircularProgress } from '@mui/material';
+import {
+  Button,
+  Typography,
+  Box,
+  Grid,
+  Paper,
+  CircularProgress,
+} from '@mui/material';
 import DateTimePicker from './DateTimePicker';
 import ReportTab from './ReportTab';
 
+// Sample report data configuration
 const REPORTS = [
   { label: 'IMS', id: 0, columns: ['Name', 'Detail', 'Status'], api: '/api/ims' },
   { label: 'SP', id: 1, columns: ['Item', 'Description'], api: '/api/sp' },
@@ -17,7 +25,7 @@ const ReportTabs = () => {
   const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false); // Loading state
 
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = (newValue) => {
     setSelectedTab(newValue);
     fetchReportData(dateTime, newValue); // Fetch data for the new report immediately
   };
@@ -51,21 +59,32 @@ const ReportTabs = () => {
     <Paper variant="outlined" className="tabs-container" style={{ padding: '16px' }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={3}>
-          <AppBar position="static" color="transparent">
-            <Tabs
-              orientation="vertical"
-              value={selectedTab}
-              onChange={handleTabChange}
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              {REPORTS.map((report) => (
-                <Tab key={report.id} label={report.label} />
-              ))}
-            </Tabs>
-          </AppBar>
+          <Box display="flex" flexDirection="column" alignItems="flex-start">
+            {REPORTS.map((report, index) => (
+              <Button
+                key={report.id}
+                onClick={() => handleTabChange(index)}
+                variant={selectedTab === index ? 'contained' : 'outlined'}
+                color={selectedTab === index ? 'primary' : 'inherit'}
+                sx={{
+                  width: '100%',
+                  marginBottom: '8px',
+                  p: 2,
+                  boxShadow: selectedTab === index ? 2 : 1,
+                  backgroundColor: selectedTab === index ? 'primary.main' : 'white',
+                  color: selectedTab === index ? 'white' : 'black',
+                  '&:hover': {
+                    backgroundColor: selectedTab === index ? 'primary.dark' : 'grey.200',
+                    transform: 'translateY(-2px)', // Little pop-up effect on hover
+                  },
+                }}
+              >
+                {report.label}
+              </Button>
+            ))}
+          </Box>
         </Grid>
-
+        
         <Grid item xs={12} md={9}>
           <Box padding={2}>
             <Grid container spacing={2}>
@@ -74,21 +93,11 @@ const ReportTabs = () => {
                   {REPORTS[selectedTab].label} Data
                 </Typography>
               </Grid>
-
+              
               <Grid item xs={12} sm={6}>
                 <DateTimePicker onSubmit={handleDateTimeSubmit} />
               </Grid>
-
-              <Grid item xs={12} sm={6} container justifyContent="flex-end">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleDateTimeSubmit(dateTime)}
-                >
-                  Submit
-                </Button>
-              </Grid>
-
+              
               <Grid item xs={12}>
                 {loading ? (
                   <Box display="flex" justifyContent="center" alignItems="center" style={{ height: '200px' }}>
