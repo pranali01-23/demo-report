@@ -78,7 +78,7 @@ const ReportTabs = () => {
               <Grid item xs={12} sm={6}>
                 <DateTimePicker onSubmit={handleDateTimeSubmit} />
               </Grid>
-              
+
               <Grid item xs={12} sm={6} container justifyContent="flex-end">
                 <Button
                   variant="contained"
@@ -91,9 +91,9 @@ const ReportTabs = () => {
 
               <Grid item xs={12}>
                 {loading ? (
-                   <Box display="flex" justifyContent="center" alignItems="center" style={{ height: '200px' }}>
-                     <CircularProgress />
-                   </Box>
+                  <Box display="flex" justifyContent="center" alignItems="center" style={{ height: '200px' }}>
+                    <CircularProgress />
+                  </Box>
                 ) : (
                   <ReportTab
                     columns={REPORTS[selectedTab].columns}
