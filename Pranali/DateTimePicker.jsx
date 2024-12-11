@@ -1,29 +1,21 @@
-import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import React from 'react';
+import { TextField } from '@mui/material';
+import { DateTimePicker as MUIDateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 const DateTimePicker = ({ onSubmit }) => {
-  const [startDate, setStartDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const handleSubmit = () => {
-    onSubmit(startDate);
+  const handleDateChange = (newValue) => {
+    setSelectedDate(newValue);
   };
 
   return (
-    <div style={{ marginBottom: '20px' }}>
-      <DatePicker
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
-        showTimeSelect
-        timeIntervals={30}
-        timeCaption="Time"
-        dateFormat="MMMM d, yyyy h:mm aa"
-      />
-      <Button variant="contained" onClick={handleSubmit}>
-        Submit
-      </Button>
-    </div>
+    <MUIDateTimePicker
+      label="Select Date & Time"
+      value={selectedDate}
+      onChange={handleDateChange}
+      renderInput={(params) => <TextField {...params} fullWidth />}
+    />
   );
 };
 
