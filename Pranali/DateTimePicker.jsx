@@ -1,21 +1,37 @@
 import React from 'react';
+import 'react-datetime/css/react-datetime.css'; // Import default styling
+import Datetime from 'react-datetime';
 import { TextField } from '@mui/material';
-import { DateTimePicker as MUIDateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 const DateTimePicker = ({ onSubmit }) => {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const handleDateChange = (newValue) => {
-    setSelectedDate(newValue);
+  const handleDateChange = (date) => {
+    if (date.isValid()) {
+      setSelectedDate(date.toDate());
+    }
+  };
+
+  const handleSubmit = () => {
+    onSubmit(selectedDate);
   };
 
   return (
-    <MUIDateTimePicker
-      label="Select Date & Time"
-      value={selectedDate}
-      onChange={handleDateChange}
-      renderInput={(params) => <TextField {...params} fullWidth />}
-    />
+    <div>
+      <Datetime
+        value={selectedDate}
+        onChange={handleDateChange}
+        renderInput={(props) => <TextField {...props} fullWidth />}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        style={{ marginTop: '16px' }}
+      >
+        Submit
+      </Button>
+    </div>
   );
 };
 
