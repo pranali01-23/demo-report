@@ -20,39 +20,40 @@ const REPORTS = [
     id: 0,
     columns: ['PSB_Code', 'RETCD', 'TRANS_NAMES', 'TRN_ST'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=ims_trans',
-    requiresDateTime: true, // Requires date and time
-    onlyDate: false,         // Not only date
+    requiresDateTime: true,
+    onlyDate: false,
   },
   {
     label: 'Online transaction report',
     id: 1,
     columns: ['ACTIVE', 'FAIL', 'MAXQ', 'PROCEDURE', 'QUED', 'STATUS', 'TIMEOUT', 'WLM_ENV'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=sp_trans',
-    requiresDateTime: true, // Requires date and time
-    onlyDate: false,         // Not only date
+    requiresDateTime: true,
+    onlyDate: false,
   },
   {
     label: 'Control monitoring report',
     id: 2,
     columns: ['DATE', 'END_TIMESTAMP', 'FAILURE_COUNT', 'JOB_NAME', 'JOB_STATUS', 'ORDERID', 'START_TIMESTAMP'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=control_m',
-    requiresDateTime: false, // Does not require date and time
+    requiresDateTime: false,
+    onlyDate: false,
   },
   {
     label: 'JHS report',
     id: 3,
     columns: ['DATE', 'FAILURE', 'JOB', 'RC', 'STATUS'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=jhs&date=12/01/2024',
-    requiresDateTime: true, // Requires only date
-    onlyDate: true,         // Requires only date
+    requiresDateTime: true,
+    onlyDate: true,
   },
   {
     label: 'Change monitoring report',
     id: 4,
     columns: ['COMPONENT_NAME', 'DATE', 'REGION', 'RELEASE_CONTAINER', 'TIME_MST', 'TYPE'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=change_monitoring',
-    requiresDateTime: true, // Requires only date
-    onlyDate: true,         // Requires only date
+    requiresDateTime: true,
+    onlyDate: true,
   },
 ];
 
@@ -138,15 +139,15 @@ const ReportTabs = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                {/* Conditionally render DateTimePicker */}
-                {REPORTS[selectedTab].requiresDateTime && (
+              {/* Only show DateTimePicker if required */}
+              {REPORTS[selectedTab].requiresDateTime && (
+                <Grid item xs={12} sm={6}>
                   <DateTimePicker
                     onlyDate={REPORTS[selectedTab].onlyDate} // Pass the onlyDate prop
                     onSubmit={handleDateTimeSubmit}
                   />
-                )}
-              </Grid>
+                </Grid>
+              )}
 
               <Grid item xs={12}>
                 {loading ? (
