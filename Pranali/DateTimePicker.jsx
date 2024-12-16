@@ -1,61 +1,44 @@
-import React from 'react';
-import 'react-datetime/css/react-datetime.css'; // Import default styling
-import Datetime from 'react-datetime';
+import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
+import AdapterDateFns from '@mui/x-date-pickers/AdapterDateFns';
+import LocalizationProvider from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker as MuiDateTimePicker, DatePicker } from '@mui/x-date-pickers';
 
-const DateTimePicker = ({ onSubmit }) => {
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const handleDateChange = (date) => {
-    if (date.isValid()) {
-      setSelectedDate(date.toDate());
-    }
-  };
+const DateTimePicker = ({ onSubmit, onlyDate }) => {
+  const [dateTime, setDateTime] = useState(new Date());
 
   const handleSubmit = () => {
-    onSubmit(selectedDate);
-  };
-
-  // Function to create an array of time options with 30-minute intervals
-  const getTimeOptions = () => {
-    const options = [];
-    const baseDate = new Date();
-    for (let i = 0; i < 48; i++) {
-      const date = new Date(baseDate.setMinutes(baseDate.getMinutes() + 30 * i));
-      options.push(date);
-    }
-    return options;
+    onSubmit(dateTime);
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Datetime
-        value={selectedDate}
-        onChange={handleDateChange}
-        dateFormat="YYYY-MM-DD"
-        timeFormat="HH:mm"
-        renderInput={(props) => (
-          <TextField {...props} fullWidth label="Select Date & Time" />
-        )}
-        // Disable all other times except the options with 30 minutes interval
-        inputProps={{ 
-          list: "time-options" 
-        }}
-      />
-      <datalist id="time-options">
-        {getTimeOptions().map((time, index) => (
-          <option key={index} value={time.toISOString()} />
-        ))}
-      </datalist>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        style={{ marginLeft: '16px' }}
-      >
-        Submit
-      </Button>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      {onlyDate ? (
+        <>
+          <DatePicker
+            label="Select Date"
+            value={dateTime}
+            onChange={(newValue) => setDateTime(newValue)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </>
+      ) : (
+        <>
+          <MuiDateTimePicker
+            label="Select Date and Time"
+            value={dateTime}
+            onChange={(newValue) => setDateTime(newValue)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </>
+      )}
+    </LocalizationProvider>
   );
 };
 
