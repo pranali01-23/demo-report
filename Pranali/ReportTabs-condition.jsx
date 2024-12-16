@@ -7,7 +7,7 @@ import {
   Paper,
   CircularProgress,
 } from '@mui/material';
-import DateTimePicker from './DateTimePicker'; // Keep this import as is
+import DateTimePicker from './DateTimePicker'; // Import DateTimePicker
 import ReportTab from './components/ReportTab';
 import './styles/ReportTabs.css';
 import './styles/styles.css';
@@ -20,35 +20,37 @@ const REPORTS = [
     id: 0,
     columns: ['PSB_Code', 'RETCD', 'TRANS_NAMES', 'TRN_ST'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=ims_trans',
-    requiresDateTime: true,
+    requiresDateTime: true, // Requires date and time
   },
   {
     label: 'Online transaction report',
     id: 1,
     columns: ['ACTIVE', 'FAIL', 'MAXQ', 'PROCEDURE', 'QUED', 'STATUS', 'TIMEOUT', 'WLM_ENV'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=sp_trans',
-    requiresDateTime: true,
+    requiresDateTime: true, // Requires date and time
   },
   {
     label: 'Control monitoring report',
     id: 2,
     columns: ['DATE', 'END_TIMESTAMP', 'FAILURE_COUNT', 'JOB_NAME', 'JOB_STATUS', 'ORDERID', 'START_TIMESTAMP'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=control_m',
-    requiresDateTime: false,
+    requiresDateTime: false, // Does not require date and time
   },
   {
     label: 'JHS report',
     id: 3,
     columns: ['DATE', 'FAILURE', 'JOB', 'RC', 'STATUS'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=jhs&date=12/01/2024',
-    requiresDateTime: true,
+    requiresDateTime: true, // Requires only date
+    onlyDate: true,         // Special flag to indicate only date selection
   },
   {
     label: 'Change monitoring report',
     id: 4,
     columns: ['COMPONENT_NAME', 'DATE', 'REGION', 'RELEASE_CONTAINER', 'TIME_MST', 'TYPE'],
     api: 'https://mfbatchreporting-dev.aexp.com/mf_batch_report?report_name=change_monitoring',
-    requiresDateTime: false,
+    requiresDateTime: true, // Requires only date
+    onlyDate: true,         // Special flag to indicate only date selection
   },
 ];
 
@@ -76,7 +78,7 @@ const ReportTabs = () => {
     const year = String(date.getFullYear());
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-    
+
     const formattedOnlyDate = `${month}/${day}/${year}`;
     const formattedTime = `${hours}:${minutes}`;
     const formattedDate = `${formattedOnlyDate}&time=${formattedTime}`; // Format DateTime for API
@@ -137,7 +139,10 @@ const ReportTabs = () => {
               <Grid item xs={12} sm={6}>
                 {/* Conditionally render the DateTimePicker based on report's requirement */}
                 {REPORTS[selectedTab].requiresDateTime && (
-                  <DateTimePicker onSubmit={handleDateTimeSubmit} />
+                  <DateTimePicker
+                    onlyDate={REPORTS[selectedTab].onlyDate} // Pass the onlyDate prop
+                    onSubmit={handleDateTimeSubmit}
+                  />
                 )}
               </Grid>
 
